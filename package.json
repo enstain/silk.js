@@ -1,0 +1,22 @@
+{
+  "name": "silkjs",
+  "version": "0.0.1",
+  "description": "Client script for the silk module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/upfinder/silkjs.git"
+  },
+  "private": true,
+  "dependencies": {
+    "babel-polyfill": "^6.3.14",
+    "babel-runtime": "^6.3.19",
+    "lodash": "^3.10.1"
+  },
+  "devDependencies": {
+    "babel-core": "^6.3.26",
+    "babel-loader": "^6.2.1",
+    "babel-plugin-transform-runtime": "^6.3.13",
+    "babel-preset-es2015": "^6.3.13",
+    "webpack": "^1.12.9"
+  }
+}
