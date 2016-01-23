@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Sandbox</title>
+
+	<style>
+		input {
+			margin-bottom: 10px;
+		}
+	</style>
+</head>
+<body>
+	<h1>Hello, there</h1>
+
+	<h3>It's plain form, nothing to do here</h3>
+	<form name="form2" action="#">
+		<input type="text" name="field1"><br/>
+		<input type="text" name="field2"><br/>
+		<input type="submit">
+	</form>
+
+	<h3>Special silky form provides parsing form data in silk</h3>
+	<form name="form2" data-silk action="#">
+		<input type="text" name="first_field"><br/>
+		<input type="number" name="second_field"><br/>
+		<input type="checkbox" name="agree"> Agree<br/>
+		<input type="submit">
+	</form>
+
+	<hr>
+	<small>* All magic is happening in browser console, let's see it</small>
+
+	<!-- so, clientside can use jquery on his own risk -->
+	<!-- <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script> -->
+	<script src="js/ru-upfinder-silk.js"></script>
+</body>
+</html>
