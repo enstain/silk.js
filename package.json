@@ -18,5 +18,11 @@
     "babel-plugin-transform-runtime": "^6.3.13",
     "babel-preset-es2015": "^6.3.13",
     "webpack": "^1.12.9"
+  },
+  "scripts": {
+    "start": "npm run server & npm run open-page & npm run webpack",
+    "server": "http-server sandbox -a localhost -p 8000 -c-1",
+    "open-page": "open http://localhost:8000",
+    "webpack": "webpack"
   }
 }
