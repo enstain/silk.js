@@ -1,6 +1,8 @@
 "use strict";
 
 import Queue from "./queue"
+import Identity from "./entities/identity"
+import PageInspector from "./page_inspector"
 
 class Entity {
 
@@ -13,7 +15,18 @@ class Entity {
 	}
 
 	addToQueue() {
-		new Queue().addToQueue(this);
+		new Queue().add(this);
+	}
+
+	getFetchedObjectForQueue() {
+		return {
+			type: this.constructor.name,
+			payload: this.payload,
+			user_id: Identity.get(),
+			user_agent: PageInspector.user_agent,
+			ip_address: PageInspector.getIpAddress(),
+			page_url: PageInspector.getPageUrl()
+		}
 	}
 
 	static uuid_generator() {

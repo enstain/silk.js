@@ -7,7 +7,7 @@ import Queue from "./queue"
 
 Identity.create();
 PageView.create();
-new Queue().lookupQueue();
+Queue.revise();
 
 window.addEventListener("load", function load(event){
     window.removeEventListener("load", load, false);
