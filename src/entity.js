@@ -1,6 +1,6 @@
 "use strict";
 
-import Queue from "./queue"
+import {queue} from "./queue"
 import Identity from "./entities/identity"
 import PageInspector from "./page_inspector"
 
@@ -15,11 +15,12 @@ class Entity {
 	}
 
 	addToQueue() {
-		new Queue().add(this);
+		queue.add(this);
 	}
 
-	getFetchedObjectForQueue() {
+	serialize() {
 		return {
+			uuid: this.uuid,
 			type: this.constructor.name,
 			payload: this.payload,
 			user_id: Identity.get(),

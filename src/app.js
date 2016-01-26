@@ -3,11 +3,11 @@
 import Identity from "./entities/identity"
 import PageView from "./entities/page_view"
 import FormSubmit from "./entities/form_submit"
-import Queue from "./queue"
+import {queue} from "./queue"
 
 Identity.create();
 PageView.create();
-Queue.revise();
+queue.execute();
 
 window.addEventListener("load", function load(event){
     window.removeEventListener("load", load, false);

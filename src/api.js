@@ -5,8 +5,13 @@ class API {
 		
 	}
 
-	static create(entity) {
-		console.log('request for', JSON.stringify(entity))
+	static create(entity, callback) {
+		console.log('request for create', JSON.stringify(entity));
+		setTimeout(function() {
+			console.log('timeout');
+			callback();
+		},  Math.floor(Math.random() * (1000 + 1)) + 1000);
+		
 	}
 
 	static isEntityUncompleteSaved(uuid) {
