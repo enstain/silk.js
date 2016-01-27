@@ -22,26 +22,18 @@ export class Queue {
 	add(entity) {
 		console.log('add to queue', entity);
 		this.barn.lpush('waitList', entity.uuid);
-		this.barn.set(entity.uuid, entity.serialize());
+		this.barn.set(entity.uuid, entity);
 	}
 
 	execute() {
-		this.inspectLengthOfLists();
 		this.inspectProgressList();
 		this.inspectRecoverList();
 		this.reviseWaitList();
 	}
 
-	inspectLengthOfLists() {
-		console.log('length progress list ', this.barn.llen('progressList'));
-		console.log('length recover list ', this.barn.llen('recoverList'));
-		console.log('length wait list ', this.barn.llen('waitList'));
-	}
-
 	inspectProgressList() {
 		while (this.barn.llen('progressList') > 0) {
 			let uuid = this.barn.lpop('progressList');
-			console.log('move entity to recover list', uuid);
 			this.barn.lpush('recoverList', uuid);
 			this.barn.condense();
 		}
@@ -50,22 +42,23 @@ export class Queue {
 	inspectRecoverList() {
 		while (this.barn.llen('recoverList') > 0) {
 			let uuid = this.barn.lpop('recoverList');
-			console.log('entity to recover', uuid);
 			if (this.entityIsSaved(uuid)) {
 				this.removeSavedEntity(uuid);
 			} else {
-				this.barn.lpush('waitList');
+				this.barn.lpush('waitList', uuid);
 			}
 			this.barn.condense();
 		}
 	}
 
+	entityIsSaved(uuid) {
+		return this.barn.get(uuid) === null;
+	}
+
 	reviseWaitList() {
-		console.log('length progress list ', this.barn.llen('progressList'));
 		while (this.barn.llen('waitList') > 0) {
 			let uuid = this.barn.lpop('waitList');
 			this.barn.lpush('progressList', uuid);
-			console.log('length progress list ', this.barn.llen('progressList'));
 			this.barn.condense();
 			let unsaved_entity = this.barn.get(uuid);
 			let saveEntity = promisify(API.create);
@@ -74,12 +67,7 @@ export class Queue {
 	}
 
 	removeSavedEntity(uuid) {
-		console.log('remove saved entity ', uuid);
 		this.barn.del(uuid);
-	}
-
-	entityIsSaved(uuid) {
-		return this.barn.get(uuid) === null;
 	}
 
 

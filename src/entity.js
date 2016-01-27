@@ -15,7 +15,7 @@ class Entity {
 	}
 
 	addToQueue() {
-		queue.add(this);
+		queue.add(this.serialize());
 	}
 
 	serialize() {
@@ -24,7 +24,7 @@ class Entity {
 			type: this.constructor.name,
 			payload: this.payload,
 			user_id: Identity.get(),
-			user_agent: PageInspector.user_agent,
+			user_agent: PageInspector.getUserAgent(),
 			ip_address: PageInspector.getIpAddress(),
 			page_url: PageInspector.getPageUrl()
 		}
