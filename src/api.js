@@ -1,4 +1,9 @@
 "use strict";
+import {mock} from 'mocktail';
+
+//SEND HEADER TO EVERY API POINT
+//X-Secret = 
+//ajax data = json
 
 class API {
 	constructor() {
@@ -8,15 +13,14 @@ class API {
 	static create(entity, callback) {
 		console.log('request for create', JSON.stringify(entity));
 		setTimeout(function() {
-			console.log('timeout');
 			callback();
 		},  Math.floor(Math.random() * (1000 + 1)) + 1000);
 		
 	}
 
-	static isEntityUncompleteSaved(uuid) {
+	static show(entity) {
 		return true;
 	}
 }
 
-export default API;
+export default mock(API);

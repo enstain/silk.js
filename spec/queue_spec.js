@@ -1,4 +1,6 @@
+import './utils/mocking_setup';
 import {Queue} from '../src/queue'
+var promisify = require("es6-promisify")
 
 function createMockStorage(){
   return {
@@ -28,7 +30,7 @@ function createMockStorage(){
   };
 }
 
-describe('Queue', () => {
+describe('Queue.add', () => {
   var storage,
       queue,
       entity;
@@ -42,10 +44,51 @@ describe('Queue', () => {
         return true
       }
     }
+    queue.add(entity);
   });
 
-  it('add entity should raise count of items in waiting list', () => {
-    queue.add(entity);
+  it('should raise count of items in waiting list', () => {
     expect(queue.barn.llen('waitList')).toBe(1);
   });
+
+  it('should save data of item in localStorage', () => {
+    expect(queue.barn.get(entity.uuid)).toBe(entity);
+  });
+});
+
+describe('Queue.execute', () => {
+  var storage,
+      queue,
+      entity,
+      execution;
+
+  beforeEach(function(done){
+    storage = createMockStorage();
+    queue = new Queue(storage);
+    entity = {
+      uuid: Math.random(),
+      serialize: function() {
+        return true
+      }
+    }
+    queue.add(entity);
+    
+    queue.execute().then(function() {
+      done();
+    });
+  });
+
+  it('should raise count of items in progressList', () => {
+    expect(queue.barn.llen('progressList')).toBe(1);
+  });
+
+  it('should erase items in waitList', () => {
+    expect(queue.barn.llen('waitList')).toBe(0);
+  });
+
+  it('should erase data of success saved item', () => {
+    expect(queue.barn.get(entity.uuid)).toBe(null);  
+  });
+
+  
 });

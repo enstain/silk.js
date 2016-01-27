@@ -1,13 +1,14 @@
 "use strict";
 
 import {queue} from "./queue"
-import Identity from "./entities/identity"
 import PageInspector from "./page_inspector"
+import CookiesRecorder from "./cookies_recorder"
 
 class Entity {
 
 	constructor() {
-		this.uuid = Entity.uuid_generator();
+		this.uuid = Entity.generateUUID();
+		this.user_id = Entity.getUserUUID();
 	}
 
 	fetchPayload() {
@@ -21,20 +22,29 @@ class Entity {
 	serialize() {
 		return {
 			uuid: this.uuid,
-			type: this.constructor.name,
+			event_type: this.constructor.name,
 			payload: this.payload,
-			user_id: Identity.get(),
-			user_agent: PageInspector.getUserAgent(),
-			ip_address: PageInspector.getIpAddress(),
+			user_id: this.user_id,
 			page_url: PageInspector.getPageUrl()
 		}
 	}
 
-	static uuid_generator() {
+	static generateUUID() {
 		return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
 		    var r = crypto.getRandomValues(new Uint8Array(1))[0]%16|0, v = c == 'x' ? r : (r&0x3|0x8);
 		    return v.toString(16);
 		});
+	}
+
+	static getUserUUID() {
+		let uuid = CookiesRecorder.getCookie("identity_uuid");
+		if (uuid) {
+			
+		} else {
+			uuid = Entity.generateUUID();
+			CookiesRecorder.setCookie("identity_uuid", uuid);
+		}
+		return uuid;
 	}
 
 }
