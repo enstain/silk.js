@@ -1,15 +1,12 @@
 "use strict";
 
-class MockAPI {
+class MockFailureAPI {
 	constructor() {
 		
 	}
 
 	static create(entity, callback) {
 		console.log('mock request for create', JSON.stringify(entity));
-		setTimeout(function() {
-			callback();
-		},  Math.floor(Math.random() * (100 + 1)));
 	}
 
 	static show(entity) {
@@ -17,4 +14,4 @@ class MockAPI {
 	}
 }
 
-export default MockAPI;
+export default MockFailureAPI;

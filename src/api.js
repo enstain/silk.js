@@ -1,5 +1,5 @@
 "use strict";
-import {mock} from 'mocktail';
+//import {mock} from 'mocktail';
 
 //SEND HEADER TO EVERY API POINT
 //X-Secret = 
@@ -23,4 +23,4 @@ class API {
 	}
 }
 
-export default mock(API);
+export default API;

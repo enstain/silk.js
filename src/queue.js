@@ -15,9 +15,12 @@ Queue lists
 ***********************************************/
 
 export class Queue {
-	constructor(storage) {
-		this.barn = new Barn(storage || localStorage); 
-		this.execute();
+	constructor(storage, api) {
+		this.barn = new Barn(storage);
+		this.api = api;
+		setTimeout(() =>
+			this.execute(), 10
+		);
 	}
 
 	add(entity) {
@@ -26,11 +29,9 @@ export class Queue {
 	}
 
 	execute() {
-		return new Promise((resolve, reject) => {
-			this.inspectProgressList();
-			this.inspectRecoverList();//.then(() => *recover list use async request, need to make promise
-			this.reviseWaitList().then(() => resolve('execution done'));
-	    })
+		this.inspectProgressList();
+		this.inspectRecoverList();
+		this.reviseWaitList();
 	}
 
 	inspectProgressList() {
@@ -54,25 +55,20 @@ export class Queue {
 	}
 
 	entityIsSaved(uuid) {
-		return this.barn.get(uuid) === null && API.show(uuid);
+		return this.barn.get(uuid) === null && this.api.show(uuid);
 	}
 
 	reviseWaitList() {
-		let promises = [];
+		
 
 		while (this.barn.llen('waitList') > 0) {
 			let uuid = this.barn.lpop('waitList');
 			this.barn.lpush('progressList', uuid);
 			this.barn.condense();
 			let unsaved_entity = this.barn.get(uuid);
-			
-			let saveEntity = promisify(API.create);
-			promises.push(
-				saveEntity(unsaved_entity).then(() => this.removeSavedEntity(uuid))
-			);
+			let saveEntity = promisify(this.api.create);
+			saveEntity(unsaved_entity).then(() => this.removeSavedEntity(uuid))
 		}
-
-		return Promise.all(promises);
 	}
 
 	removeSavedEntity(uuid) {
@@ -83,4 +79,4 @@ export class Queue {
 
 }
 
-export var queue = typeof window == "undefined" ? null : new Queue();
+export var queue = typeof window == "undefined" ? null : new Queue(localStorage, API);

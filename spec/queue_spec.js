@@ -1,6 +1,7 @@
-import './utils/mocking_setup';
+//import './utils/mocking_setup';
 import {Queue} from '../src/queue'
-var promisify = require("es6-promisify")
+import MockAPI from './utils/modules/mockAPI.js'
+import MockFailureAPI from './utils/modules/mockFailureAPI.js'
 
 function createMockStorage(){
   return {
@@ -37,7 +38,7 @@ describe('Queue.add', () => {
 
   beforeEach(function(){
     storage = createMockStorage();
-    queue = new Queue(storage);
+    queue = new Queue(storage, MockAPI);
     entity = {
       uuid: "1",
       getFetchedObjectForQueue: function() {
@@ -56,15 +57,14 @@ describe('Queue.add', () => {
   });
 });
 
-describe('Queue.execute', () => {
+describe('Queue constructor', () => {
   var storage,
       queue,
-      entity,
-      execution;
+      entity;
 
   beforeEach(function(done){
     storage = createMockStorage();
-    queue = new Queue(storage);
+    queue = new Queue(storage, MockAPI);
     entity = {
       uuid: Math.random(),
       serialize: function() {
@@ -72,10 +72,9 @@ describe('Queue.execute', () => {
       }
     }
     queue.add(entity);
-    
-    queue.execute().then(function() {
-      done();
-    });
+    setTimeout(function() {
+      done()
+    }, 200);
   });
 
   it('should raise count of items in progressList', () => {
@@ -90,5 +89,72 @@ describe('Queue.execute', () => {
     expect(queue.barn.get(entity.uuid)).toBe(null);  
   });
 
+  it('should meet empty lists and storage on the new execute of queue', (done) => {
+    let another_queue = new Queue(storage, MockAPI);
+    setTimeout(function() {
+      expect(another_queue.barn.llen('progressList')).toBe(0);
+      expect(another_queue.barn.llen('recoverList')).toBe(0);
+      expect(another_queue.barn.llen('waitList')).toBe(0);
+      expect(another_queue.barn.get(entity.uuid)).toBe(null);  
+      done()
+    }, 1000);
+  });
+
+  it('should meet unprocessing but saved items before new execute of queue', () => {
+    let another_queue = new Queue(storage, MockAPI);
+    expect(another_queue.barn.llen('progressList')).toBe(1);
+    expect(queue.barn.get(entity.uuid)).toBe(null); 
+  });
+  
+});
+
+describe('Queue constructor with failure API', () => {
+  var storage,
+      queue,
+      entity;
+
+  beforeEach(function(done){
+    storage = createMockStorage();
+    queue = new Queue(storage, MockFailureAPI);
+    entity = {
+      uuid: Math.random(),
+      serialize: function() {
+        return true
+      }
+    }
+    queue.add(entity);
+    setTimeout(function() {
+      done()
+    }, 200);
+  });
+
+  it('should raise count of items in progressList', () => {
+    expect(queue.barn.llen('progressList')).toBe(1);
+  });
+
+  it('should erase items in waitList', () => {
+    expect(queue.barn.llen('waitList')).toBe(0);
+  });
+
+  it('shouldn`t erase data of item in storage', () => {
+    expect(queue.barn.get(entity.uuid)).toBe(entity);
+  });
+
+  it('shouldn`t meet empty lists and storage on the new execute of queue', (done) => {
+    let another_queue = new Queue(storage, MockFailureAPI);
+    setTimeout(function() {
+      expect(another_queue.barn.llen('progressList')).toBe(1);
+      expect(another_queue.barn.llen('recoverList')).toBe(0);
+      expect(another_queue.barn.llen('waitList')).toBe(0);
+      expect(another_queue.barn.get(entity.uuid)).not.toBe(null);
+      done()
+    }, 1000);
+  });
+
+  it('should meet unprocessing and unsaved items before new execute of queue', () => {
+    let another_queue = new Queue(storage, MockFailureAPI);
+    expect(another_queue.barn.llen('progressList')).toBe(1);
+    expect(queue.barn.get(entity.uuid)).toBe(entity);
+  });
   
 });
