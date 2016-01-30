@@ -26,6 +26,9 @@ export class Queue {
 	add(entity) {
 		this.barn.lpush('waitList', entity.uuid);
 		this.barn.set(entity.uuid, entity);
+		setTimeout(() =>
+			this.execute(), 10
+		);
 	}
 
 	execute() {
@@ -59,8 +62,6 @@ export class Queue {
 	}
 
 	reviseWaitList() {
-		
-
 		while (this.barn.llen('waitList') > 0) {
 			let uuid = this.barn.lpop('waitList');
 			this.barn.lpush('progressList', uuid);

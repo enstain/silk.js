@@ -1,5 +1,4 @@
 "use strict";
-//import {mock} from 'mocktail';
 
 //SEND HEADER TO EVERY API POINT
 //X-Secret = 
