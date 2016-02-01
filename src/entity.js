@@ -9,6 +9,7 @@ class Entity {
 	constructor() {
 		this.uuid = Entity.generateUUID();
 		this.user_id = Entity.getUserUUID();
+		this.fetchPayload();
 	}
 
 	fetchPayload() {

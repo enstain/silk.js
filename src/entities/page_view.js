@@ -16,10 +16,6 @@ class PageView extends Entity {
 		}
 	}
 
-	static create() {
-		return new PageView().uuid;
-	}
-
 }
 
 export default PageView;

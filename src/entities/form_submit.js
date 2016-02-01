@@ -17,10 +17,6 @@ class FormSubmit extends Entity {
 		)
 	}
 
-	static create() {
-		return new FormSubmit().uuid;
-	}
-
 }
 
 export default FormSubmit;

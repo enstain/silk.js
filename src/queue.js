@@ -19,8 +19,8 @@ export class Queue {
 		this.barn = new Barn(storage);
 		this.api = api;
 
-		setTimeout(() =>
-			this.execute(), 10
+		setInterval(() =>
+			this.execute(), 1000
 		);
 	}
 
@@ -47,9 +47,10 @@ export class Queue {
 		while (this.barn.llen('recoverList') > 0) {
 			let uuid = this.barn.lpop('recoverList');
 			console.log('inspect recover', uuid);
-			let checkStatus = promisify(this.api.show, function(status) { this.resolve(status) })
-			checkStatus(uuid).then((status) => this.processEntityInRecover(uuid, status.saved));
-			
+			if (this.entityDataIsNotEmpty(uuid)) {
+				let checkStatus = promisify(this.api.show, function(status) { this.resolve(status) })
+				checkStatus(uuid).then((status) => this.processEntityInRecover(uuid, status.saved));
+			}
 			this.barn.condense();
 		}
 	}
@@ -60,6 +61,10 @@ export class Queue {
 		} else {
 			this.barn.lpush('waitList', uuid);
 		}
+	}
+
+	entityDataIsNotEmpty(uuid) {
+		return this.barn.get(uuid) != null
 	}
 
 	reviseWaitList() {
