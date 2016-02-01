@@ -80,48 +80,61 @@ describe('Queue', () => {
     //Queue constructor with good API
     describe('with good API', () => {
 
-      beforeEach(function(){
+      beforeEach(function(done){
         api = MockAPI;
         queue = new Queue(storage, api);
         queue.add(entity);
+        setTimeout(function() {
+          done()
+        }, 200);
       });
 
-      describe('and stable work', () => {
+      it('should raise count of items in progressList', () => {
+        expect(queue.barn.llen('progressList')).toBe(1);
+      });
+
+      it('should erase items in waitList', () => {
+        expect(queue.barn.llen('waitList')).toBe(0);
+      });
+
+      it('should erase data of success saved item', () => {
+        expect(queue.barn.get(entity.uuid)).toBe(null);  
+      });
+
+      it('should meet unprocessing but saved items before new execute of queue', () => {
+        let another_queue = new Queue(storage, api);
+        expect(another_queue.barn.llen('progressList')).toBe(1);
+        expect(queue.barn.get(entity.uuid)).toBe(null); 
+      });
+
+      describe('chained another queue', () => {
+        var another_queue;
+
         beforeEach(function(done) {
+          another_queue = new Queue(storage, api);
           setTimeout(function() {
-            done()
-          }, 200);
+            done();
+          }, 1);
         });
 
-        it('should raise count of items in progressList', () => {
-          expect(queue.barn.llen('progressList')).toBe(1);
-        });
-
-        it('should erase items in waitList', () => {
-          expect(queue.barn.llen('waitList')).toBe(0);
-        });
-
-        it('should erase data of success saved item', () => {
-          expect(queue.barn.get(entity.uuid)).toBe(null);  
-        });
-
-        it('should meet empty lists and storage on the new execute of queue', (done) => {
-          let another_queue = new Queue(storage, api);
-          setTimeout(function() {
-            expect(another_queue.barn.llen('progressList')).toBe(0);
-            expect(another_queue.barn.llen('recoverList')).toBe(0);
-            expect(another_queue.barn.llen('waitList')).toBe(0);
-            expect(another_queue.barn.get(entity.uuid)).toBe(null);  
-            done()
-          }, 1000);
-        });
-
-        it('should meet unprocessing but saved items before new execute of queue', () => {
-          let another_queue = new Queue(storage, api);
+        it('should meet entity in progressList', () => {
           expect(another_queue.barn.llen('progressList')).toBe(1);
-          expect(queue.barn.get(entity.uuid)).toBe(null); 
         });
+
+        it('should meet empty recoverList', () => {
+          expect(another_queue.barn.llen('recoverList')).toBe(0);
+        });
+
+        it('should meet empty waitList', () => {
+          expect(another_queue.barn.llen('waitList')).toBe(0);
+        });
+
+        it('should meet empty storage data on entity', () => {
+          expect(another_queue.barn.get(entity.uuid)).toBe(null);  
+        });
+
       });
+      
 
     });
 
@@ -149,21 +162,38 @@ describe('Queue', () => {
         expect(queue.barn.get(entity.uuid)).toBe(entity);
       });
 
-      it('shouldn`t meet empty lists and storage on the new execute of queue', (done) => {
-        let another_queue = new Queue(storage, api);
-        setTimeout(function() {
-          expect(another_queue.barn.llen('progressList')).toBe(1);
-          expect(another_queue.barn.llen('recoverList')).toBe(0);
-          expect(another_queue.barn.llen('waitList')).toBe(0);
-          expect(another_queue.barn.get(entity.uuid)).not.toBe(null);
-          done()
-        }, 1000);
-      });
-
       it('should meet unprocessing and unsaved items before new execute of queue', () => {
         let another_queue = new Queue(storage, api);
         expect(another_queue.barn.llen('progressList')).toBe(1);
         expect(queue.barn.get(entity.uuid)).toBe(entity);
+      });
+
+      describe('chained another queue', () => {
+        var another_queue;
+
+        beforeEach(function(done) {
+          another_queue = new Queue(storage, api);
+          setTimeout(function() {
+            done();
+          }, 1);
+        });
+
+        it('should meet entity in progressList', () => {
+          expect(another_queue.barn.llen('progressList')).toBe(1);
+        });
+
+        it('should meet empty recoverList', () => {
+          expect(another_queue.barn.llen('recoverList')).toBe(0);
+        });
+
+        it('should meet empty waitList', () => {
+          expect(another_queue.barn.llen('waitList')).toBe(0);
+        });
+
+        it('shouldn`t meet empty storage data on entity', () => {
+          expect(another_queue.barn.get(entity.uuid)).not.toBe(null);  
+        });
+
       });
 
     });

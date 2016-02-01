@@ -12,8 +12,10 @@ class MockAPI {
 		},  Math.floor(Math.random() * (100 + 1)));
 	}
 
-	static show(entity) {
-		return true;
+	static show(entity, callback) {
+		setTimeout(function() {
+			callback(true);
+		},  Math.floor(Math.random() * (100 + 1)));
 	}
 }
 
