@@ -9,8 +9,8 @@ class MockFailureAPI {
 		console.log('mock request for create', JSON.stringify(entity));
 	}
 
-	static show(entity) {
-		return true;
+	static show(entity, callback) {
+		console.log('show status of entity', entity);
 	}
 }
 

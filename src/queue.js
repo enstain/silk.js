@@ -18,6 +18,7 @@ export class Queue {
 	constructor(storage, api) {
 		this.barn = new Barn(storage);
 		this.api = api;
+
 		setTimeout(() =>
 			this.execute(), 10
 		);
@@ -26,9 +27,6 @@ export class Queue {
 	add(entity) {
 		this.barn.lpush('waitList', entity.uuid);
 		this.barn.set(entity.uuid, entity);
-		setTimeout(() =>
-			this.execute(), 10
-		);
 	}
 
 	execute() {
@@ -48,17 +46,20 @@ export class Queue {
 	inspectRecoverList() {
 		while (this.barn.llen('recoverList') > 0) {
 			let uuid = this.barn.lpop('recoverList');
-			if (this.entityIsSaved(uuid)) {
-				this.removeSavedEntity(uuid);
-			} else {
-				this.barn.lpush('waitList', uuid);
-			}
+			console.log('inspect recover', uuid);
+			let checkStatus = promisify(this.api.show, function(status) { this.resolve(status) })
+			checkStatus(uuid).then((status) => this.processEntityInRecover(uuid, status.saved));
+			
 			this.barn.condense();
 		}
 	}
 
-	entityIsSaved(uuid) {
-		return this.barn.get(uuid) === null && this.api.show(uuid);
+	processEntityInRecover(uuid, saved) {
+		if (saved) {
+			this.removeSavedEntity(uuid);
+		} else {
+			this.barn.lpush('waitList', uuid);
+		}
 	}
 
 	reviseWaitList() {
@@ -67,6 +68,7 @@ export class Queue {
 			this.barn.lpush('progressList', uuid);
 			this.barn.condense();
 			let unsaved_entity = this.barn.get(uuid);
+			console.log('request for create unsaved entity', unsaved_entity);
 			let saveEntity = promisify(this.api.create);
 			saveEntity(unsaved_entity).then(() => this.removeSavedEntity(uuid))
 		}
