@@ -1,13 +1,8 @@
 "use strict";
 
 var request = require('ajax-request');
-var ajax = require('ajax');
 var BASE_URL = "http://staging.up-finder.com:80/";
 var token = "test";
-
-//SEND HEADER TO EVERY API POINT
-//X-Secret = 
-//ajax data = json
 
 class API {
 	constructor() {
