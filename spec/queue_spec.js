@@ -44,7 +44,7 @@ describe('Queue', () => {
       queue = new Queue(storage, MockAPI);
       entity = {
         uuid: "1",
-        getFetchedObjectForQueue: function() {
+        serialize: function() {
           return true
         }
       }

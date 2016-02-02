@@ -2,21 +2,25 @@
 
 import PageView from "./entities/page_view"
 import FormSubmit from "./entities/form_submit"
-import AddToCart from "./entities/add_to_cart"
+import ButtonClick from "./entities/button_click"
 import {queue} from "./queue"
 
-new PageView();
+//new PageView();
 
 window.addEventListener("load", function load(event){
     window.removeEventListener("load", load, false);
 
     function onLoadHook() {
-    	jQuery('[data-silk="form_submit"]').bind("submit", function() {
+    	jQuery('form[data-silk]').submit(function() {
+    		/*let form = jQuery(this);
+    		let silk_data = form.data('silk-submit');*/
+    		console.log('form', jQuery(this));
 	    	new FormSubmit(jQuery(this));
-	    });
-
-	    jQuery('[data-silk="add_to_cart_click"]').bind("click", function() {
-	    	new AddToCart();
+    	}); 
+    		
+	    jQuery('[data-silk-click]').bind("click", function() {
+	    	let silk_data = jQuery(this).data('silk-click');
+	    	new ButtonClick(silk_data);
 	    });
     }
 

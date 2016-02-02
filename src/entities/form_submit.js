@@ -12,6 +12,7 @@ class FormSubmit extends Entity {
 
 	fetchPayload(form) {
 		super.fetchPayload();
+		console.log('form', form);
 		form.serializeArray().map(field => 
 			this.payload[field.name] = field.value
 		)
