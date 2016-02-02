@@ -1,18 +1,16 @@
 "use strict";
 
-import Entity from "../entity"
+import Event from "../event"
 
-class FormSubmit extends Entity {
+class FormSubmit extends Event {
 
-	constructor(form) {
-		super();
+	constructor(silk_data, form) {
+		super(silk_data);
 		this.fetchPayload(form);
 		super.addToQueue();
 	}
 
 	fetchPayload(form) {
-		super.fetchPayload();
-		console.log('form', form);
 		form.serializeArray().map(field => 
 			this.payload[field.name] = field.value
 		)

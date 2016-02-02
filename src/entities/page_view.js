@@ -11,9 +11,7 @@ class PageView extends Entity {
 	}
 
 	fetchPayload() {
-		this.payload = {
-			referer_uri: document.referrer
-		}
+		this.payload.referer_uri = document.referrer;
 	}
 
 }
