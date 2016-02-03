@@ -31,7 +31,7 @@ function createMockStorage(){
   };
 }
 
-describe('Queue', () => {
+xdescribe('Queue', () => {
 
   //Queue add
   describe('add', () => {

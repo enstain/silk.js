@@ -1,23 +1,24 @@
 "use strict";
 
-var request = require('ajax-request');
-var BASE_URL = "http://staging.up-finder.com:80/";
-var token = "test";
+import {encoder} from "./encoder"
+
+const BASE_URL = "http://staging.up-finder.com:80/";
 
 class API {
-	constructor() {
-		
+	constructor(token) {
+		console.log('api got token', token);
+		this.token = encoder.decode(token);
 	}
 
-	static create(entity, callback) {
-		API._send("POST", `${BASE_URL}events`, JSON.stringify(entity), callback);
+	create(entity, callback) {
+		this._send("POST", `${BASE_URL}events`, JSON.stringify(entity), callback);
 	}
 
-	static show(entity_uuid, callback) {
-		API._send("GET", `${BASE_URL}events/${entity_uuid}`, 0, callback);
+	show(entity_uuid, callback) {
+		this._send("GET", `${BASE_URL}events/${entity_uuid}`, 0, callback);
 	}
 
-	static _send(method, url, params, callback) {
+	_send(method, url, params, callback) {
 		var xhr = new XMLHttpRequest();
 	    xhr.open(method, url, true);
 	    
@@ -34,7 +35,7 @@ class API {
 	        }
 	    }
 
-	    xhr.setRequestHeader("X-Secret", token); 
+	    xhr.setRequestHeader("X-Secret", this.token); 
 	    if (params) {
 	    	xhr.send(params);	
 	    } else {
