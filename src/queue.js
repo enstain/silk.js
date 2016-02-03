@@ -2,7 +2,6 @@
 
 import Barn from "../node_modules/barn/index.js"
 import API from "./api"
-var promisify = require("es6-promisify")
 
 /***********************************************
 
@@ -19,8 +18,8 @@ export class Queue {
 		this.barn = new Barn(storage);
 		this.api = api;
 
-		setTimeout(() =>
-			this.execute(), 10
+		setInterval(() =>
+			this.execute(), 1000
 		);
 	}
 
@@ -47,9 +46,10 @@ export class Queue {
 		while (this.barn.llen('recoverList') > 0) {
 			let uuid = this.barn.lpop('recoverList');
 			console.log('inspect recover', uuid);
-			let checkStatus = promisify(this.api.show, function(status) { this.resolve(status) })
-			checkStatus(uuid).then((status) => this.processEntityInRecover(uuid, status.saved));
-			
+			if (this.entityDataIsNotEmpty(uuid)) {
+				let checkStatus = new Promise( (resolve, reject) => this.api.show(uuid, resolve(status)) );
+				checkStatus.then((status) => this.processEntityInRecover(uuid, status.saved));
+			}
 			this.barn.condense();
 		}
 	}
@@ -62,6 +62,10 @@ export class Queue {
 		}
 	}
 
+	entityDataIsNotEmpty(uuid) {
+		return this.barn.get(uuid) != null
+	}
+
 	reviseWaitList() {
 		while (this.barn.llen('waitList') > 0) {
 			let uuid = this.barn.lpop('waitList');
@@ -69,8 +73,8 @@ export class Queue {
 			this.barn.condense();
 			let unsaved_entity = this.barn.get(uuid);
 			console.log('request for create unsaved entity', unsaved_entity);
-			let saveEntity = promisify(this.api.create);
-			saveEntity(unsaved_entity).then(() => this.removeSavedEntity(uuid))
+			let saveEntity = new Promise( (resolve, reject) => this.api.create(unsaved_entity, resolve()) );
+			saveEntity.then(() => this.removeSavedEntity(uuid))
 		}
 	}
 
@@ -82,4 +86,4 @@ export class Queue {
 
 }
 
-export var queue = typeof window == "undefined" ? null : new Queue(localStorage, API);
+export var queue = typeof window == "undefined" ? null : new Queue(localStorage, new API(silk_token));

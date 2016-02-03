@@ -11,13 +11,7 @@ class PageView extends Entity {
 	}
 
 	fetchPayload() {
-		this.payload = {
-			referer_uri: document.referrer
-		}
-	}
-
-	static create() {
-		return new PageView().uuid;
+		this.payload.referer_uri = document.referrer;
 	}
 
 }

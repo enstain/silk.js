@@ -6,12 +6,9 @@ import CookiesRecorder from "./cookies_recorder"
 
 class Entity {
 
-	constructor() {
+	constructor(params) {
 		this.uuid = Entity.generateUUID();
 		this.user_id = Entity.getUserUUID();
-	}
-
-	fetchPayload() {
 		this.payload = {}
 	}
 
@@ -38,9 +35,7 @@ class Entity {
 
 	static getUserUUID() {
 		let uuid = CookiesRecorder.getCookie("identity_uuid");
-		if (uuid) {
-			
-		} else {
+		if (uuid === undefined) {
 			uuid = Entity.generateUUID();
 			CookiesRecorder.setCookie("identity_uuid", uuid);
 		}
