@@ -19,7 +19,7 @@ class Entity {
 	serialize() {
 		return {
 			uuid: this.uuid,
-			event_type: this.constructor.name,
+			event_type: this.event_type,
 			payload: this.payload,
 			user_id: this.user_id,
 			page_url: PageInspector.getPageUrl()

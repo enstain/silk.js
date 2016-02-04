@@ -1,11 +1,6 @@
-import Encoder from '../src/encoder'
+import {encoder} from '../src/encoder'
 
 describe('Encoder', () => {
-  var encoder;
-
-  beforeEach(function(){
-    encoder = new Encoder();
-  });
 
   describe('encode', () => {
     it('should encode string', () => {

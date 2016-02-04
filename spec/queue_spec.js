@@ -31,7 +31,7 @@ function createMockStorage(){
   };
 }
 
-xdescribe('Queue', () => {
+describe('Queue', () => {
 
   //Queue add
   describe('add', () => {
@@ -86,7 +86,7 @@ xdescribe('Queue', () => {
         queue.add(entity);
         setTimeout(function() {
           done()
-        }, 200);
+        }, 100);
       });
 
       it('should raise count of items in progressList', () => {
@@ -114,7 +114,7 @@ xdescribe('Queue', () => {
           another_queue = new Queue(storage, api);
           setTimeout(function() {
             done();
-          }, 1);
+          }, 100);
         });
 
         it('should meet entity in progressList', () => {
@@ -147,7 +147,7 @@ xdescribe('Queue', () => {
         queue.add(entity);
         setTimeout(function() {
           done()
-        }, 200);
+        }, 100);
       });
 
       it('should raise count of items in progressList', () => {
@@ -175,7 +175,7 @@ xdescribe('Queue', () => {
           another_queue = new Queue(storage, api);
           setTimeout(function() {
             done();
-          }, 1);
+          }, 100);
         });
 
         it('should meet entity in progressList', () => {

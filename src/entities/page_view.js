@@ -6,6 +6,7 @@ class PageView extends Entity {
 
 	constructor() {
 		super();
+		this.event_type = "PageView";
 		this.fetchPayload();
 		super.addToQueue();
 	}
