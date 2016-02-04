@@ -49,6 +49,10 @@ var config = {
                 }
             }
         ]
+    },
+
+    node: {
+      fs: "empty"
     }
 };
 

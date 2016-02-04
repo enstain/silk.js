@@ -1,48 +1,89 @@
 "use strict";
 
 import Barn from "../node_modules/barn/index.js"
-import PageInspector from "./page_inspector"
-import CookiesRecorder from "./cookies_recorder"
 import API from "./api"
 
-class Queue {
-	constructor() {
-		this.barn = new Barn(localStorage); 
+/***********************************************
+
+Queue lists
+
+1. waitList keeps new unsaved entities
+2. progressList keeps entities requested to save at the server
+3. recoverList keeps items of progressList, which didn't get callback from server because of interrupt
+
+***********************************************/
+
+export class Queue {
+	constructor(storage, api) {
+		this.barn = new Barn(storage);
+		this.api = api;
+
+		setInterval(() =>
+			this.execute(), 1000
+		);
 	}
 
-	addToQueue(entity) {
-		console.log('add to queue', entity)
-		let identity = this.getIdentity();
-		this.barn.lpush('list', entity.uuid);
-		this.barn.set(entity.uuid, {
-			type: entity.constructor.name,
-			user_id: identity.uuid,
-			user_agent: identity.user_agent,
-			ip_address: PageInspector.getIpAddress(),
-			page_url: PageInspector.getPageUrl(),
-			payload: entity.payload
-		});
+	add(entity) {
+		this.barn.lpush('waitList', entity.uuid);
+		this.barn.set(entity.uuid, entity);
 	}
 
-	setIdentity(identity) {
-		this.barn.set(identity.uuid, identity);
+	execute() {
+		this.inspectProgressList();
+		this.inspectRecoverList();
+		this.reviseWaitList();
 	}
 
-	getIdentity() {
-		let uuid = CookiesRecorder.getCookie("identity_uuid");
-		return this.barn.get(uuid);
-	}
-
-	lookupQueue() {
-		while (this.barn.llen('list') > 0) {
-			let uuid = this.barn.lpop('list');
-			if (API.isEntityUncompleteSaved(uuid)) {
-				let unsaved_entity = this.barn.get(uuid);
-				API.create(unsaved_entity);
-			}
+	inspectProgressList() {
+		while (this.barn.llen('progressList') > 0) {
+			let uuid = this.barn.lpop('progressList');
+			this.barn.lpush('recoverList', uuid);
+			this.barn.condense();
 		}
-		this.barn.condense();
 	}
+
+	inspectRecoverList() {
+		while (this.barn.llen('recoverList') > 0) {
+			let uuid = this.barn.lpop('recoverList');
+			console.log('inspect recover', uuid);
+			if (this.entityDataIsNotEmpty(uuid)) {
+				let checkStatus = new Promise( (resolve, reject) => this.api.show(uuid, resolve(status)) );
+				checkStatus.then((status) => this.processEntityInRecover(uuid, status.saved));
+			}
+			this.barn.condense();
+		}
+	}
+
+	processEntityInRecover(uuid, saved) {
+		if (saved) {
+			this.removeSavedEntity(uuid);
+		} else {
+			this.barn.lpush('waitList', uuid);
+		}
+	}
+
+	entityDataIsNotEmpty(uuid) {
+		return this.barn.get(uuid) != null
+	}
+
+	reviseWaitList() {
+		while (this.barn.llen('waitList') > 0) {
+			let uuid = this.barn.lpop('waitList');
+			this.barn.lpush('progressList', uuid);
+			this.barn.condense();
+			let unsaved_entity = this.barn.get(uuid);
+			console.log('request for create unsaved entity', unsaved_entity);
+			let saveEntity = new Promise( (resolve, reject) => this.api.create(unsaved_entity, resolve()) );
+			saveEntity.then(() => this.removeSavedEntity(uuid))
+		}
+	}
+
+	removeSavedEntity(uuid) {
+		console.log('remove saved entity', uuid);
+		this.barn.del(uuid);
+	}
+
+
 }
 
-export default Queue;
+export var queue = typeof window == "undefined" ? null : new Queue(localStorage, new API(silk_token));
