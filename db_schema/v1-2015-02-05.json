@@ -1,0 +1,32 @@
+{
+	"fields": [
+		{
+			"name": "uuid",
+			"type": "string"
+		},
+		{
+			"name": "user_id",
+			"type": "string"
+		},
+		{
+			"name": "page_url",
+			"type": "string"
+		},
+		{
+			"name": "event_type",
+			"type": "string"
+		},
+		{
+			"name": "referer_uri",
+			"type": "string"
+		},
+		{
+			"name": "silk_data",
+			"type": "string"
+		},
+		{
+			"name": "payload",
+			"type": "json"
+		}
+	]
+}
