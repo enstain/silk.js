@@ -13,7 +13,7 @@
 			"type": "string"
 		},
 		{
-			"name": "event_type",
+			"name": "type",
 			"type": "string"
 		},
 		{
@@ -21,7 +21,7 @@
 			"type": "string"
 		},
 		{
-			"name": "silk_data",
+			"name": "action_name",
 			"type": "string"
 		},
 		{
