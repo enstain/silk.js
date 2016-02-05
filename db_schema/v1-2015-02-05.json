@@ -1,0 +1,32 @@
+{
+	"fields": [
+		{
+			"name": "uuid",
+			"type": "string"
+		},
+		{
+			"name": "user_id",
+			"type": "string"
+		},
+		{
+			"name": "page_url",
+			"type": "string"
+		},
+		{
+			"name": "type",
+			"type": "string"
+		},
+		{
+			"name": "referer_uri",
+			"type": "string"
+		},
+		{
+			"name": "action_name",
+			"type": "string"
+		},
+		{
+			"name": "payload",
+			"type": "json"
+		}
+	]
+}
