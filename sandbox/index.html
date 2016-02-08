@@ -35,9 +35,28 @@
 
 	<!-- so, clientside can use jquery on his own risk -->
 	<!-- <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script> -->
+
+	<!-- production mode -->
+	<!--
 	<script>
-		var silk_token = "dGVzdA==";
+		(function() {
+			var xhr = new XMLHttpRequest();
+			xhr.open("GET", "http://staging.up-finder.com/script", true);
+			xhr.onreadystatechange = function() {
+		        if (xhr.readyState == 4) {
+		            var data = xhr.responseText;
+		            var script   = document.createElement("script");
+					script.type  = "text/javascript";
+					script.text  = data;
+					document.body.appendChild(script);
+		        }
+		    }
+		    xhr.send();
+		}())
 	</script>
-	<script src="silk.js"></script>
+	-->
+
+	<script src="js/silk.js"></script>
+
 </body>
 </html>

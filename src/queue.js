@@ -86,4 +86,4 @@ export class Queue {
 
 }
 
-export var queue = typeof window == "undefined" ? null : new Queue(localStorage, new API(silk_token));
+export var queue = typeof window == "undefined" ? null : new Queue(localStorage, new API(config.token));

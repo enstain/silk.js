@@ -1,6 +1,10 @@
 {
 	"fields": [
 		{
+			"name": "v",
+			"type": "string"
+		},
+		{
 			"name": "uuid",
 			"type": "string"
 		},
@@ -13,7 +17,7 @@
 			"type": "string"
 		},
 		{
-			"name": "type",
+			"name": "event_type",
 			"type": "string"
 		},
 		{
@@ -26,7 +30,7 @@
 		},
 		{
 			"name": "payload",
-			"type": "json"
+			"type": "string"
 		}
-	]
+  ]
 }
