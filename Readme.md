@@ -6,6 +6,10 @@
 
 `NODE_ENV=production webpack` to build for production
 
+## Deploy
+
+`npm run deploy <production|staging>` - don't afraid about "ERR Protocol error: unbalanced quotes in request", it will save silk lib on the server anyway
+
 ## Sandbox
 
 `npm start` - run server, open localhost:8000 in browser and run webpack for hot changes in silk
@@ -14,11 +18,16 @@
 
 1. Put this code into html of clientside:
 
+- staging
+
 ```javascript
-<script>
-	var silk_token = <given string of encode token>;
-</script>
-<script src="link_to_silk_lib"></script>
+<script>!function(){var t=new XMLHttpRequest;t.open("GET","http://staging.up-finder.com/script",!0),t.onreadystatechange=function(){if(4==t.readyState){var e=t.responseText,n=document.createElement("script");n.type="text/javascript",n.text=e,document.body.appendChild(n)}},t.send()}();</script>
+```
+
+- production
+
+```javascript
+<script>!function(){var t=new XMLHttpRequest;t.open("GET","http://production.up-finder.com/script",!0),t.onreadystatechange=function(){if(4==t.readyState){var e=t.responseText,n=document.createElement("script");n.type="text/javascript",n.text=e,document.body.appendChild(n)}},t.send()}();</script>
 ```
 
 2. Available hooks on interaction with elements at the client page:
