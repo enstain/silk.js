@@ -7,7 +7,6 @@ class PageView extends Entity {
 	constructor() {
 		super();
 		this.event_type = "pageview";
-		this.referer_uri = document.referrer;
 		super.addToQueue();
 	}
 
