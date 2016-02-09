@@ -26,11 +26,9 @@ class Entity {
 			payload: this.payload,
 			user_id: this.user_id,
 			page_url: pageInspector.getPageUrl(),
-			source_type: utm_data.source_type,
 			utm_source: utm_data.utm_source,
 			utm_medium: utm_data.utm_medium,
-			utm_campaign: utm_data.utm_campaign,
-
+			utm_campaign: utm_data.utm_campaign
 		}
 	}
 
