@@ -25,6 +25,18 @@
 			"type": "string"
 		},
 		{
+			"name": "utm_source",
+			"type": "string"
+		},
+		{
+			"name": "utm_medium",
+			"type": "string"
+		},
+		{
+			"name": "utm_campaign",
+			"type": "string"
+		},
+		{
 			"name": "action_name",
 			"type": "string"
 		},
