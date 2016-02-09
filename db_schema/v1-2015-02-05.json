@@ -25,10 +25,6 @@
 			"type": "string"
 		},
 		{
-			"name": "source_type",
-			"type": "string"
-		},
-		{
 			"name": "utm_source",
 			"type": "string"
 		},

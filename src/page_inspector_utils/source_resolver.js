@@ -145,7 +145,7 @@ class SourceResolver {
     };
 
     _collectDirectData() {
-        return { utm_source: '(direct)' };
+        return { utm_medium: 'direct' };
     };
 
     _collectUtmData() {
@@ -208,9 +208,9 @@ class SourceResolver {
         var value;
         for (var i = 0; i < paramNames.length; i++) {
             value = this._validateValue(paramNames[i], (data[paramNames[i]] || ''));
-            fullData[paramNames[i]] = encodeURIComponent(value || '(none)');
+            fullData[paramNames[i]] = encodeURIComponent(value || '');
         }
-        fullData['source_type'] = type;
+        //fullData['source_type'] = type;
         return fullData;
     };
 
