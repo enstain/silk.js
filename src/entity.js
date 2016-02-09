@@ -17,12 +17,20 @@ class Entity {
 	}
 
 	serialize() {
+		let pageInspector = new PageInspector();
+		let utm_data = pageInspector.source_data;
+
 		return {
 			uuid: this.uuid,
 			event_type: this.event_type,
 			payload: this.payload,
 			user_id: this.user_id,
-			page_url: PageInspector.getPageUrl()
+			page_url: pageInspector.getPageUrl(),
+			source_type: utm_data.source_type,
+			utm_source: utm_data.utm_source,
+			utm_medium: utm_data.utm_medium,
+			utm_campaign: utm_data.utm_campaign,
+
 		}
 	}
 
