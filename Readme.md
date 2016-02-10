@@ -32,7 +32,14 @@
 
 2. Available hooks on interaction with elements at the client page:
 
-- `data-silk-submit="custom_event_name"` - add this attribute to tag with supported submit event (usually <form>)
+- `data-silk-submit="custom_event_name"` - add this attribute to tag with supported submit event (usually <form>). warning: we can serialize tags with filled attribute "name" only. empty "name" value will not pass.
+
+right
+`<input type="text" name="field" value="hello">`
+
+wrong
+`<input type="text" value="hello">`
+
 - `data-silk-click="custom_event_name"` - add this attribute to tag with supported click event (usually any clickable elements like <a>, <button>, ...)
 
 Value of "custom_event_name" is passing with another data to server, so it helps to make detailed goals
