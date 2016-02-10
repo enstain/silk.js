@@ -16,6 +16,7 @@ class FormSubmit extends Event {
 		let a = form.serializeArray()
 
 		$.each(a, function() {
+			console.log('serial', this);
 			if (o[this.name]) {
                 if (!o[this.name].push) {
                     o[this.name] = [o[this.name]];
