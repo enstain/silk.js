@@ -20,17 +20,22 @@ class Entity {
 		let pageInspector = new PageInspector();
 		let utm_data = pageInspector.source_data;
 
-		return {
+		var serial = {
 			uuid: this.uuid,
 			event_type: this.event_type,
 			payload: this.payload,
 			user_id: this.user_id,
 			page_url: pageInspector.getPageUrl(),
-			referer_uri: document.referrer,
-			utm_source: utm_data.utm_source,
-			utm_medium: utm_data.utm_medium,
-			utm_campaign: utm_data.utm_campaign
+			referer_uri: document.referrer
 		}
+
+		if (utm_data.utm_medium != "direct") {
+			serial.utm_source = utm_data.utm_source
+			serial.utm_medium = utm_data.utm_medium
+			serial.utm_campaign = utm_data.utm_campaign
+		}
+
+		return serial;
 	}
 
 	static generateUUID() {

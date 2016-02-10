@@ -148,29 +148,30 @@ class SourceResolver {
         return { utm_medium: 'direct' };
     };
 
-    _collectUtmData() {
-        var _collectUtmParamData = function (name, paramSynonyms) {
-            var result = this.urlSupport.locationParams[name];
-            var tmp;
-            if (result) {
-                return result;
-            } else {
-                if (paramSynonyms && Object.prototype.toString.call(paramSynonyms) === '[object Array]') {
-                    for (var i = 0; i < paramSynonyms.length; i++) {
-                        tmp = this.urlSupport.locationParams[paramSynonyms[i]];
-                        if (tmp) {
-                            return tmp;
-                        }
+    _collectUtmParamData(name, paramSynonyms) {
+        var result = this.urlSupport.locationParams[name];
+        var tmp;
+        if (result) {
+            return result;
+        } else {
+            if (paramSynonyms && Object.prototype.toString.call(paramSynonyms) === '[object Array]') {
+                for (var i = 0; i < paramSynonyms.length; i++) {
+                    tmp = this.urlSupport.locationParams[paramSynonyms[i]];
+                    if (tmp) {
+                        return tmp;
                     }
                 }
             }
-            return '';
-        };
+        }
+        return '';
+    }
+
+    _collectUtmData() {
         var result = {};
         var param;
         for (var i = 0; i < this._utmParamsToSave.length; i++) {
             param = this._utmParamsToSave[i];
-            result[param] = _collectUtmParamData(param, this.options.utmSynonyms[param])
+            result[param] = this._collectUtmParamData(param, this.options.utmSynonyms[param])
         }
         return result;
     };
@@ -208,7 +209,7 @@ class SourceResolver {
         var value;
         for (var i = 0; i < paramNames.length; i++) {
             value = this._validateValue(paramNames[i], (data[paramNames[i]] || ''));
-            fullData[paramNames[i]] = encodeURIComponent(value || '');
+            fullData[paramNames[i]] = encodeURIComponent(value || 'none');
         }
         //fullData['source_type'] = type;
         return fullData;
