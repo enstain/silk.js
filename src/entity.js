@@ -21,6 +21,8 @@ class Entity {
 		let utm_data = pageInspector.source_data;
 
 		var serial = {
+			v: "1",
+			project_id: config.project_id,
 			uuid: this.uuid,
 			event_type: this.event_type,
 			payload: this.payload,
