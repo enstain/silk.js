@@ -27,8 +27,8 @@
   "scripts": {
     "start": "npm run server & npm run open-page & npm run webpack",
     "server": "http-server sandbox -a localhost -p 8000 -c-1",
-    "open-page": "open http://lvh.me:8000",
-    "webpack": "webpack",
+    "open-page": "open http://localhost:8000",
+    "webpack": "DEBUG=t webpack",
     "test": "babel-node spec/run.js",
     "deploy": "bin/deploy.sh"
   }

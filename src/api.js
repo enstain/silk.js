@@ -6,7 +6,9 @@ const BASE_URL = "http://staging.up-finder.com:80/";
 
 class API {
 	constructor(token) {
-		console.log('api got token', token);
+		if (DEBUG) {
+			console.log('api got token', token);	
+		}
 		this.token = encoder.decode(token);
 	}
 

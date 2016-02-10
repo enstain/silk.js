@@ -45,7 +45,9 @@ export class Queue {
 	inspectRecoverList() {
 		while (this.barn.llen('recoverList') > 0) {
 			let uuid = this.barn.lpop('recoverList');
-			console.log('inspect recover', uuid);
+			if (DEBUG) {
+				console.log('inspect recover', uuid);	
+			}
 			if (this.entityDataIsNotEmpty(uuid)) {
 				let checkStatus = new Promise( (resolve, reject) => this.api.show(uuid, resolve(status)) );
 				checkStatus.then((status) => this.processEntityInRecover(uuid, status.saved));
@@ -72,14 +74,18 @@ export class Queue {
 			this.barn.lpush('progressList', uuid);
 			this.barn.condense();
 			let unsaved_entity = this.barn.get(uuid);
-			console.log('request for create unsaved entity', unsaved_entity);
+			if (DEBUG) {
+				console.log('request for create unsaved entity', unsaved_entity);	
+			}
 			let saveEntity = new Promise( (resolve, reject) => this.api.create(unsaved_entity, resolve()) );
 			saveEntity.then(() => this.removeSavedEntity(uuid))
 		}
 	}
 
 	removeSavedEntity(uuid) {
-		console.log('remove saved entity', uuid);
+		if (DEBUG) {
+			console.log('remove saved entity', uuid);
+		}
 		this.barn.del(uuid);
 	}
 

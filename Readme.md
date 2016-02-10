@@ -8,7 +8,7 @@
 
 ## Deploy
 
-`npm run deploy <production|staging>` - don't afraid about "ERR Protocol error: unbalanced quotes in request", it will save silk lib on the server anyway
+`npm run deploy <production|staging> [debug]>` - don't afraid about "ERR Protocol error: unbalanced quotes in request", it will save silk lib on the server anyway
 
 ## Sandbox
 
