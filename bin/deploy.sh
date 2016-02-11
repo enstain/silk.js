@@ -25,4 +25,5 @@ lib=`echo $lib | base64`
 scp redis-deploy-script.txt deploy@up-finder.com:redis-deploy-script.txt
 ssh deploy@up-finder.com <<'ENDSSH'
 echo -e "$(cat redis-deploy-script.txt)" | redis-cli --pipe
+rm redis-deploy-script.txt
 ENDSSH

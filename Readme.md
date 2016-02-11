@@ -48,5 +48,6 @@ Value of "custom_event_name" is passing with another data to server, so it helps
 
 1. CPC, CPM, CPA - parse url (if exists "utm_...", "xclid", etc)
 2. Direct - referal_uri is empty
-3. Referal - referal_uri does not match any regular in list of search engines and so on (e.g. "yandex.ru", "mail.ru", "rambler.ru", "google.com", etc)
-4. Organic - referal_uri matches some regular in list of search engines and so on
+3. Inner - referal_uri is not empty and match client domain itself
+4. Referal - referal_uri does not match any regular in list of search engines and so on (e.g. "yandex.ru", "mail.ru", "rambler.ru", "google.com", etc)
+5. Organic - referal_uri matches some regular in list of search engines and so on

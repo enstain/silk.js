@@ -31,7 +31,7 @@ class Entity {
 			referer_uri: document.referrer
 		}
 
-		if (utm_data.utm_medium != "direct") {
+		if (utm_data.not_inner) {
 			serial.utm_source = utm_data.utm_source
 			serial.utm_medium = utm_data.utm_medium
 			serial.utm_campaign = utm_data.utm_campaign
