@@ -50,9 +50,12 @@ class Entity {
 
 	static getUserUUID() {
 		let uuid = CookiesRecorder.getCookie("identity_uuid");
+		console.log(uuid);
 		if (uuid === undefined) {
 			uuid = Entity.generateUUID();
-			CookiesRecorder.setCookie("identity_uuid", uuid);
+			CookiesRecorder.setCookie("identity_uuid", uuid, {
+				expires: 2147483647
+			});
 		}
 		return uuid;
 	}
