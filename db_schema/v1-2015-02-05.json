@@ -41,6 +41,14 @@
 			"type": "string"
 		},
 		{
+			"name": "utm_term",
+			"type": "string"
+		},
+		{
+			"name": "utm_content",
+			"type": "string"
+		},
+		{
 			"name": "action_name",
 			"type": "string"
 		},

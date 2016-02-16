@@ -6,7 +6,7 @@ class SourceResolver {
 
     constructor() {
         this._correctTypes = { direct: true, utm: true, organic: true, referral: true };
-        this._utmParamsToSave = ['utm_source', 'utm_medium', 'utm_campaign'];
+        this._utmParamsToSave = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'];
 
         this.options = {
             organics: [

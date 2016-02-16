@@ -36,6 +36,8 @@ class Entity {
 			serial.utm_source = utm_data.utm_source
 			serial.utm_medium = utm_data.utm_medium
 			serial.utm_campaign = utm_data.utm_campaign
+			serial.utm_term = utm_data.utm_term
+			serial.utm_content = utm_data.utm_content
 		}
 
 		return serial;
@@ -50,7 +52,6 @@ class Entity {
 
 	static getUserUUID() {
 		let uuid = CookiesRecorder.getCookie("identity_uuid");
-		console.log(uuid);
 		if (uuid === undefined) {
 			uuid = Entity.generateUUID();
 			CookiesRecorder.setCookie("identity_uuid", uuid, {
