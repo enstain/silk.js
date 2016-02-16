@@ -9,9 +9,15 @@ new PageView();
 
 window.addEventListener("load", function load(event){
     window.removeEventListener("load", load, false);
+    if (DEBUG) {
+    	console.log('page loaded');
+    }
 
     function onLoadHook() {
     	jQuery('[data-silk-submit]').submit(function() {
+    		if (DEBUG) {
+    			console.log('hook submit');
+    		}
     		let form = jQuery(this);
     		let silk_data = form.data('silk-submit');
 	    	new FormSubmit(silk_data, form);

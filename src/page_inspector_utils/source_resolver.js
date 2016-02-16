@@ -90,18 +90,14 @@ class SourceResolver {
 
     _isOrganic() {
         var source = this._findSourceWithHost(this.options.organics);
-        if (source) {
-            if (!!this._getStoredType()) {
-                var searchText = this.urlSupport.referrerParams[source.param];
-                if (searchText && Object.prototype.toString.call(this.options.ignoreOrganics) === '[object Array]') {
-                    var ignored = false;
-                    for (var i = 0; i < this.options.ignoreOrganics.length; i++) {
-                        ignored = ignored || this.options.ignoreOrganics[i].test(searchText);
-                    }
-                    return !ignored;
-                } else {
-                    return true;
+        if (source) {            
+            var searchText = this.urlSupport.referrerParams[source.param];
+            if (searchText && Object.prototype.toString.call(this.options.ignoreOrganics) === '[object Array]') {
+                var ignored = false;
+                for (var i = 0; i < this.options.ignoreOrganics.length; i++) {
+                    ignored = ignored || this.options.ignoreOrganics[i].test(searchText);
                 }
+                return !ignored;
             } else {
                 return true;
             }

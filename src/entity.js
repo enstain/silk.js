@@ -6,7 +6,7 @@ import CookiesRecorder from "./cookies_recorder"
 
 class Entity {
 
-	constructor(params) {
+	constructor() {
 		this.uuid = Entity.generateUUID();
 		this.user_id = Entity.getUserUUID();
 		this.payload = {}
@@ -28,6 +28,7 @@ class Entity {
 			payload: this.payload,
 			user_id: this.user_id,
 			page_url: pageInspector.getPageUrl(),
+			action_name: this.action_name || '',
 			referer_uri: document.referrer
 		}
 
