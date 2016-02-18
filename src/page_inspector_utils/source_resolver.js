@@ -141,7 +141,7 @@ class SourceResolver {
     };
 
     _collectDirectData() {
-        return { utm_medium: 'direct' };
+        return { utm_source: '(direct)', utm_medium: '(none)' };
     };
 
     _collectUtmParamData(name, paramSynonyms) {
