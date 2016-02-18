@@ -206,8 +206,8 @@ class SourceResolver {
         fullData['not_inner'] = false;
         for (var i = 0; i < paramNames.length; i++) {
             value = this._validateValue(paramNames[i], (data[paramNames[i]] || ''));
-            fullData[paramNames[i]] = encodeURIComponent(value || 'none');
-            fullData['not_inner'] = fullData['not_inner'] || fullData[paramNames[i]] != 'none';
+            fullData[paramNames[i]] = encodeURIComponent(value || '');
+            fullData['not_inner'] = fullData['not_inner'] || fullData[paramNames[i]] != '';
         }
         return fullData;
     };
