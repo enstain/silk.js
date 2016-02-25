@@ -6,7 +6,7 @@ class FormSubmit extends Event {
 
 	constructor(silk_data, form) {
 		super(silk_data);
-		this.event_type = "formSubmit";
+		this.event_type = "submit";
 		this.fetchPayload(form);
 		super.addToQueue();
 	}

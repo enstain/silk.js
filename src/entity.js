@@ -6,7 +6,7 @@ import CookiesRecorder from "./cookies_recorder"
 
 class Entity {
 
-	constructor(params) {
+	constructor() {
 		this.uuid = Entity.generateUUID();
 		this.user_id = Entity.getUserUUID();
 		this.payload = {}
@@ -28,6 +28,7 @@ class Entity {
 			payload: this.payload,
 			user_id: this.user_id,
 			page_url: pageInspector.getPageUrl(),
+			action_name: this.action_name || '',
 			referer_uri: document.referrer
 		}
 
@@ -35,6 +36,8 @@ class Entity {
 			serial.utm_source = utm_data.utm_source
 			serial.utm_medium = utm_data.utm_medium
 			serial.utm_campaign = utm_data.utm_campaign
+			serial.utm_term = utm_data.utm_term
+			serial.utm_content = utm_data.utm_content
 		}
 
 		return serial;
@@ -51,7 +54,9 @@ class Entity {
 		let uuid = CookiesRecorder.getCookie("identity_uuid");
 		if (uuid === undefined) {
 			uuid = Entity.generateUUID();
-			CookiesRecorder.setCookie("identity_uuid", uuid);
+			CookiesRecorder.setCookie("identity_uuid", uuid, {
+				expires: 2147483647
+			});
 		}
 		return uuid;
 	}

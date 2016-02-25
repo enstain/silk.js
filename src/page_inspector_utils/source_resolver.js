@@ -6,7 +6,7 @@ class SourceResolver {
 
     constructor() {
         this._correctTypes = { direct: true, utm: true, organic: true, referral: true };
-        this._utmParamsToSave = ['utm_source', 'utm_medium', 'utm_campaign'];
+        this._utmParamsToSave = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'];
 
         this.options = {
             organics: [
@@ -90,18 +90,14 @@ class SourceResolver {
 
     _isOrganic() {
         var source = this._findSourceWithHost(this.options.organics);
-        if (source) {
-            if (!!this._getStoredType()) {
-                var searchText = this.urlSupport.referrerParams[source.param];
-                if (searchText && Object.prototype.toString.call(this.options.ignoreOrganics) === '[object Array]') {
-                    var ignored = false;
-                    for (var i = 0; i < this.options.ignoreOrganics.length; i++) {
-                        ignored = ignored || this.options.ignoreOrganics[i].test(searchText);
-                    }
-                    return !ignored;
-                } else {
-                    return true;
+        if (source) {            
+            var searchText = this.urlSupport.referrerParams[source.param];
+            if (searchText && Object.prototype.toString.call(this.options.ignoreOrganics) === '[object Array]') {
+                var ignored = false;
+                for (var i = 0; i < this.options.ignoreOrganics.length; i++) {
+                    ignored = ignored || this.options.ignoreOrganics[i].test(searchText);
                 }
+                return !ignored;
             } else {
                 return true;
             }
@@ -145,7 +141,7 @@ class SourceResolver {
     };
 
     _collectDirectData() {
-        return { utm_medium: 'direct' };
+        return { utm_source: '(direct)', utm_medium: '(none)' };
     };
 
     _collectUtmParamData(name, paramSynonyms) {
@@ -210,8 +206,8 @@ class SourceResolver {
         fullData['not_inner'] = false;
         for (var i = 0; i < paramNames.length; i++) {
             value = this._validateValue(paramNames[i], (data[paramNames[i]] || ''));
-            fullData[paramNames[i]] = encodeURIComponent(value || 'none');
-            fullData['not_inner'] = fullData['not_inner'] || fullData[paramNames[i]] != 'none';
+            fullData[paramNames[i]] = encodeURIComponent(value || '');
+            fullData['not_inner'] = fullData['not_inner'] || fullData[paramNames[i]] != '';
         }
         return fullData;
     };
