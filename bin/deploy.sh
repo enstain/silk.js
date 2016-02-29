@@ -13,9 +13,9 @@ fi
 
 if [ "$2" == "debug" ]
 then
-	NODE_ENV=production DEBUG=t webpack
+	NODE_ENV="$1" DEBUG=t webpack
 else
-	NODE_ENV=production webpack	
+	NODE_ENV="$1" webpack
 fi
 
 lib=`cat dist/ru-upfinder-silk.js`
