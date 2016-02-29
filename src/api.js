@@ -2,7 +2,7 @@
 
 import {encoder} from "./encoder"
 
-const BASE_URL = "http://staging.up-finder.com:80/";
+const BASE_URL = "https://staging.up-finder.com:80/";
 
 class API {
 	constructor(token) {
