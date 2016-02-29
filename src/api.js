@@ -1,8 +1,7 @@
 "use strict";
 
 import {encoder} from "./encoder"
-
-const BASE_URL = "https://staging.up-finder.com:80/";
+const BASE_URL = DEVELOPMENT ? "http://staging.up-finder.com:80/" : "https://up-finder.com:443/";
 
 class API {
 	constructor(token) {
