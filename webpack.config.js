@@ -3,6 +3,7 @@ var path = require('path');
 const NODE_ENV = process.env.NODE_ENV || "development";
 const DEBUG = process.env.DEBUG ? true : false;
 const DEVELOPMENT = NODE_ENV == 'development';
+const PRODUCTION = NODE_ENV == 'production';
 
 var config = {
     devtool: DEVELOPMENT ? 'cheap-module-source-map' : null,
@@ -17,7 +18,8 @@ var config = {
         new webpack.NoErrorsPlugin(),
         new webpack.DefinePlugin({
             DEVELOPMENT: DEVELOPMENT,
-            DEBUG: DEBUG
+            DEBUG: DEBUG,
+            'PRODUCTION': PRODUCTION
         })
         //new webpack.ProvidePlugin({
         //    '_': 'lodash',
@@ -49,6 +51,10 @@ var config = {
                 }
             }
         ]
+    },
+
+    node: {
+      fs: "empty"
     }
 };
 

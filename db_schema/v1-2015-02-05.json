@@ -1,0 +1,60 @@
+{
+	"fields": [
+		{
+			"name": "v",
+			"type": "string"
+		},
+		{
+		    "name": "project_id",
+		    "type": "string"
+	    },
+		{
+			"name": "uuid",
+			"type": "string"
+		},
+		{
+			"name": "user_id",
+			"type": "string"
+		},
+		{
+			"name": "page_url",
+			"type": "string"
+		},
+		{
+			"name": "event_type",
+			"type": "string"
+		},
+		{
+			"name": "referer_uri",
+			"type": "string"
+		},
+		{
+			"name": "utm_source",
+			"type": "string"
+		},
+		{
+			"name": "utm_medium",
+			"type": "string"
+		},
+		{
+			"name": "utm_campaign",
+			"type": "string"
+		},
+		{
+			"name": "utm_term",
+			"type": "string"
+		},
+		{
+			"name": "utm_content",
+			"type": "string"
+		},
+		{
+			"name": "action_name",
+			"type": "string"
+		},
+		{
+			"name": "payload",
+			"type": "string"
+		}
+  ]
+}

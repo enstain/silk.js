@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Sandbox</title>
+
+	<style>
+		input {
+			margin-bottom: 10px;
+		}
+	</style>
+</head>
+<body>
+	<h1>Hello, there</h1>
+
+	<h3>It's plain form, nothing to do here</h3>
+	<form name="form1" action="#">
+		<input type="text" name="field1"><br/>
+		<input type="text" name="field2"><br/>
+		<input type="submit">
+	</form>
+
+	<h3>Special silky form provides parsing form data in silk</h3>
+	<form name="form2" id="contact" data-silk-submit="form2_submit" action="#">
+		<input type="text" name="first_field"><br/>
+		<input type="number" name="second_field"><br/>
+		<textarea name="text">Message</textarea>
+		<select name="selectbox">
+			<option value="val1">1</option>
+			<option value="val2">2</option>
+		</select>
+		<input type="checkbox" name="agree"> Agree<br/>
+		<input type="submit">
+	</form>
+
+	<h3>Try another event, e.g. <a href="#" data-silk-click="add_to_cart">add to cart</a> or <a href="#" data-silk-click="order">order</a></h3>
+
+	<a href="about.html">Navigate to another page</a>
+	<a href="#anchor">Navigate to anchro</a>
+
+	<hr>
+	<small>* All magic is happening in browser console, let's see it</small>
+
+	<!-- so, clientside can use jquery on his own risk -->
+	<script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
+	<script>
+	  $(function() {
+	  	$("#contact").submit(function (e) {
+    		e.preventDefault();
+    		console.log('it was ajax form');
+    	});
+	  });
+	</script>
+
+	<!-- production mode -->
+	<!--
+	<script>
+		(function() {
+			var xhr = new XMLHttpRequest();
+			xhr.open("GET", "http://staging.up-finder.com/script", true);
+			xhr.onreadystatechange = function() {
+		        if (xhr.readyState == 4) {
+		            var data = xhr.responseText;
+		            var script   = document.createElement("script");
+					script.type  = "text/javascript";
+					script.text  = data;
+					document.body.appendChild(script);
+		        }
+		    }
+		    xhr.send();
+		}())
+	</script>
+	-->
+
+	<!--
+	<script>
+		var config = {
+			"token": "dGVzdA==",
+			"project_id": "0"
+		}
+	</script>
+	<script src="js/ru-upfinder-silk.js"></script> -->
+	<!-- <script src="silk.js"></script> -->
+	
+	
+	<!-- <script src="https://up-finder.com/static/script.js"></script> -->
+
+</body>
+</html>
