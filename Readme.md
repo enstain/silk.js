@@ -1,3 +1,7 @@
+## Purpose
+
+Purpose of silk.js is to collect some information from client side about visitor's source and some custom actions on a web page. It sends info to the back-end about where was visitor from and what did he do on the site. This library was written for a service UpFinder [http://upsidefinder.com/](http://upsidefinder.com/)
+
 ## Development
 
 `webpack` - to start development mode
